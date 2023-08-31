@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230806_172701-xyo4v8go/ckpt", "run_id": "xyo4v8go", "_timestamp": 1691311400.4224863, "train_loss_epoch": 0.08482535928487778, "epoch": 99, "trainer/global_step": 499, "_runtime": 978.5292112827301, "_step": 129, "lr-AdamW": 0.00017739041952504782, "train_loss_step": 0.08108215034008026, "val_loss": 0.15048684179782867, "_wandb": {"runtime": 979}}

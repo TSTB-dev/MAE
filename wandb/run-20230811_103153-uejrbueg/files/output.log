@@ -1,0 +1,74 @@
+/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/lightning_fabric/plugins/environments/slurm.py:165: PossibleUserWarning: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python3 /home/dl/takamagahara/hutodama/MAE/src/main.py ...
+  rank_zero_warn(
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/lightning_fabric/plugins/environments/slurm.py:165: PossibleUserWarning: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python3 /home/dl/takamagahara/hutodama/MAE/src/main.py ...
+  rank_zero_warn(
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/2
+----------------------------------------------------------------------------------------------------
+distributed_backend=nccl
+All distributed processes registered. Starting with 2 processes
+----------------------------------------------------------------------------------------------------
+You are using a CUDA device ('NVIDIA GeForce RTX 3090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+  | Name  | Type                 | Params
+-----------------------------------------------
+0 | model | MaskedAutoencoderViT | 111 M
+-----------------------------------------------
+111 M     Trainable params
+252 K     Non-trainable params
+111 M     Total params
+447.631   Total estimated model params size (MB)
+Sanity Checking DataLoader 0:   0%|                                                                                                                                                                                                                     | 0/10 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/dl/takamagahara/hutodama/MAE/src/main.py", line 6, in <module>
+    main(params)
+  File "/media/dl/hutodama/MAE/src/train.py", line 101, in main
+    trainer.fit(method, loco_datamodule)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 529, in fit
+    call._call_and_handle_interrupt(
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 41, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/launchers/subprocess_script.py", line 91, in launch
+    return function(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 568, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 973, in _run
+    results = self._run_stage()
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1014, in _run_stage
+    self._run_sanity_check()
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1043, in _run_sanity_check
+    val_loop.run()
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/utilities.py", line 177, in _decorator
+    return loop_run(self, *args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 115, in run
+    self._evaluation_step(batch, batch_idx, dataloader_idx)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 375, in _evaluation_step
+    output = call._call_strategy_hook(trainer, hook_name, *step_kwargs.values())
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 291, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/ddp.py", line 336, in validation_step
+    return self.model(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1156, in forward
+    output = self._run_ddp_forward(*inputs, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1110, in _run_ddp_forward
+    return module_to_run(*inputs[0], **kwargs[0])  # type: ignore[index]
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/overrides/base.py", line 102, in forward
+    return self._forward_module.validation_step(*inputs, **kwargs)
+  File "/media/dl/hutodama/MAE/src/method.py", line 115, in validation_step
+    val_loss, pred, mask = self.inference(batch)
+  File "/media/dl/hutodama/MAE/src/method.py", line 48, in inference
+    loss, pred, mask = self.forward(batch, seg_masks=seg_masks, **kwargs)
+  File "/media/dl/hutodama/MAE/src/method.py", line 55, in forward
+    mask_indices = self.mask_selection(seg_masks, self.params.top_k, self.params.mask_range)  # length: B, each element is a list of indices.
+  File "/media/dl/hutodama/MAE/src/method.py", line 206, in mask_selection
+    patches, patch_masks = get_patches_containing_mask(selected_masks, self.model.patch_embed.patch_size, self.params.resolution)
+  File "/media/dl/hutodama/MAE/src/common.py", line 132, in get_patches_containing_mask
+    if np.any(mask[patch_ymin:patch_ymax, patch_xmin:patch_xmax] == 1):
+TypeError: list indices must be integers or slices, not tuple

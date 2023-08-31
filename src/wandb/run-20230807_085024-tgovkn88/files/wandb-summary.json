@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230807_085024-tgovkn88/ckpt", "run_id": "tgovkn88", "_timestamp": 1691368371.649355, "train_loss_epoch": 0.015760105103254318, "epoch": 499, "trainer/global_step": 2499, "_runtime": 2546.7357289791107, "_step": 649, "lr-AdamW": 8.282750395768927e-05, "train_loss_step": 0.01588399149477482, "val_loss": 0.03191063925623894, "_wandb": {"runtime": 2546}}

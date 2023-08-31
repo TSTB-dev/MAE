@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230806_175403-gszxmw26/ckpt", "run_id": "gszxmw26", "_timestamp": 1691312750.9876754, "train_loss_epoch": 0.09805651009082794, "epoch": 99, "trainer/global_step": 499, "_runtime": 707.8473303318024, "_step": 129, "lr-AdamW": 7.095616781001913e-05, "train_loss_step": 0.09582468122243881, "val_loss": 0.1467713862657547, "_wandb": {"runtime": 707}}

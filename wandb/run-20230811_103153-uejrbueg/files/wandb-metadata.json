@@ -1,0 +1,92 @@
+{
+    "os": "Linux-5.15.0-69-generic-x86_64-with-glibc2.10",
+    "python": "3.8.5",
+    "heartbeatAt": "2023-08-11T01:31:54.892014",
+    "startedAt": "2023-08-11T01:31:53.928428",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/dl/takamagahara/hutodama/MAE/src/main.py",
+    "host": "dl-machine",
+    "username": "dl",
+    "executable": "/home/dl/takamagahara/hutodama/MAE/env/mae/bin/python3",
+    "cpu_count": 10,
+    "cpu_count_logical": 10,
+    "cpu_freq": {
+        "current": 1438.2333,
+        "min": 1200.0,
+        "max": 4700.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1500.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1300.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1457.159,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1400.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1482.333,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1400.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 1200.0,
+            "min": 1200.0,
+            "max": 4700.0
+        },
+        {
+            "current": 2500.0,
+            "min": 1200.0,
+            "max": 4700.0
+        }
+    ],
+    "disk": {
+        "total": 937.5339202880859,
+        "used": 726.1519355773926
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 2,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        },
+        {
+            "name": "NVIDIA GeForce RTX 3090",
+            "memory_total": 25769803776
+        }
+    ],
+    "memory": {
+        "total": 125.52386093139648
+    }
+}

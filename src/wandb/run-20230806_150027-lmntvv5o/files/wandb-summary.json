@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230806_150027-lmntvv5o/ckpt", "run_id": "lmntvv5o", "_timestamp": 1691301981.1890886, "val_loss": 0.1472032368183136, "epoch": 8, "trainer/global_step": 44, "_runtime": 353.24276757240295, "_step": 16, "train_loss_epoch": 0.13464322686195374, "_wandb": {"runtime": 379}}

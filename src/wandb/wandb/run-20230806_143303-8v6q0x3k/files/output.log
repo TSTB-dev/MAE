@@ -1,0 +1,62 @@
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/2
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+Traceback (most recent call last):
+  File "/media/dl/hutodama/MAE/src/main.py", line 6, in <module>
+    main(params)
+  File "/media/dl/hutodama/MAE/src/train.py", line 84, in main
+    trainer.fit(method, loco_datamodule)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 529, in fit
+    call._call_and_handle_interrupt(
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 41, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/launchers/subprocess_script.py", line 91, in launch
+    return function(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 568, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 973, in _run
+    results = self._run_stage()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1016, in _run_stage
+    self.fit_loop.run()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/fit_loop.py", line 201, in run
+    self.advance()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/fit_loop.py", line 354, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 133, in run
+    self.advance(data_fetcher)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 218, in advance
+    batch_output = self.automatic_optimization.run(trainer.optimizers[0], kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 185, in run
+    self._optimizer_step(kwargs.get("batch_idx", 0), closure)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 260, in _optimizer_step
+    call._call_lightning_module_hook(
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 144, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/core/module.py", line 1256, in optimizer_step
+    optimizer.step(closure=optimizer_closure)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/core/optimizer.py", line 155, in step
+    step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/ddp.py", line 256, in optimizer_step
+    optimizer_output = super().optimizer_step(optimizer, closure, model, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/strategy.py", line 225, in optimizer_step
+    return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/plugins/precision/precision_plugin.py", line 114, in optimizer_step
+    return optimizer.step(closure=closure, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/optim/lr_scheduler.py", line 69, in wrapper
+    return wrapped(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/optim/optimizer.py", line 280, in wrapper
+    out = func(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/optim/optimizer.py", line 33, in _use_grad
+    ret = func(self, *args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/optim/adamw.py", line 148, in step
+    loss = closure()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/plugins/precision/precision_plugin.py", line 101, in _wrap_closure
+    closure_result = closure()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 140, in __call__
+    self._result = self.closure(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 126, in closure
+    step_output = self._step_fn()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 310, in _training_step
+    return self.output_result_cls.from_training_step_output(training_step_output, trainer.accumulate_grad_batches)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 66, in from_training_step_output
+    raise MisconfigurationException(
+lightning_fabric.utilities.exceptions.MisconfigurationException: In automatic_optimization, when `training_step` returns a dict, the 'loss' key needs to be present

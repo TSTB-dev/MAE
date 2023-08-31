@@ -1,0 +1,32 @@
+Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/2
+LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1]
+Traceback (most recent call last):
+  File "/media/dl/hutodama/MAE/src/main.py", line 6, in <module>
+    main(params)
+  File "/media/dl/hutodama/MAE/src/train.py", line 84, in main
+    trainer.fit(method, loco_datamodule)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 529, in fit
+    call._call_and_handle_interrupt(
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 41, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/launchers/subprocess_script.py", line 91, in launch
+    return function(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 568, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 973, in _run
+    results = self._run_stage()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1014, in _run_stage
+    self._run_sanity_check()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1043, in _run_sanity_check
+    val_loop.run()
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/utilities.py", line 177, in _decorator
+    return loop_run(self, *args, **kwargs)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 115, in run
+    self._evaluation_step(batch, batch_idx, dataloader_idx)
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 381, in _evaluation_step
+    call._call_lightning_module_hook(trainer, hook_name, output, *step_kwargs.values())
+  File "/media/dl/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 144, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/src/method.py", line 80, in on_validation_batch_end
+    self.log_dict(logs, sync_dist=True)
+NameError: name 'logs' is not defined

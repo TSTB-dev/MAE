@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230806_220925-vg448oz6/ckpt", "run_id": "vg448oz6", "_timestamp": 1691332960.5137184, "train_loss_epoch": 0.006391278002411127, "epoch": 999, "trainer/global_step": 4999, "_runtime": 5595.146658420563, "_step": 1299, "lr-AdamW": 8.280141186335498e-05, "train_loss_step": 0.00644631776958704, "val_loss": 0.11516975611448288, "_wandb": {"runtime": 5595}}

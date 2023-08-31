@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230807_093357-3bg73wz9/ckpt", "run_id": "3bg73wz9", "_timestamp": 1691370699.3245456, "train_loss_epoch": 0.005936434026807547, "epoch": 499, "trainer/global_step": 2499, "_runtime": 2262.2434437274933, "_step": 649, "lr-AdamW": 7.075970801633281e-05, "train_loss_step": 0.005788146518170834, "val_loss": 0.01428602822124958, "_wandb": {"runtime": 2262}}

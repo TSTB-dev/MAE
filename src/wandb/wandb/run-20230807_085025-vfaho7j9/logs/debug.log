@@ -1,0 +1,14 @@
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Current SDK version is 0.15.8
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Configure stats pid to 993318
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Loading settings from /home/dl/.config/wandb/settings
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Loading settings from /media/dl/hutodama/MAE/src/wandb/settings
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-08-07 08:50:25,964 INFO    MainThread:993318 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'main.py', 'program': 'main.py'}
+2023-08-07 08:50:25,965 INFO    MainThread:993318 [wandb_init.py:_log_setup():507] Logging user logs to wandb/wandb/run-20230807_085025-vfaho7j9/logs/debug.log
+2023-08-07 08:50:25,965 INFO    MainThread:993318 [wandb_init.py:_log_setup():508] Logging internal logs to wandb/wandb/run-20230807_085025-vfaho7j9/logs/debug-internal.log
+2023-08-07 08:50:25,965 INFO    MainThread:993318 [wandb_init.py:init():547] calling init triggers
+2023-08-07 08:50:25,965 INFO    MainThread:993318 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {}
+2023-08-07 08:50:25,965 INFO    MainThread:993318 [wandb_init.py:init():591] wandb.init() called when a run is still active
+2023-08-07 09:33:01,908 WARNING MsgRouterThr:993318 [router.py:message_loop():77] message_loop has been closed

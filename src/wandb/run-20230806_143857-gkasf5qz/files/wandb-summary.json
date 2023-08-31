@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230806_143857-gkasf5qz/ckpt", "run_id": "gkasf5qz", "_timestamp": 1691300695.3508399, "val_loss": 1.4175753593444824, "epoch": 13, "trainer/global_step": 69, "_runtime": 357.87946677207947, "_step": 15, "lr-AdamW": 0.00033752631845200716, "loss": 1.4784736633300781, "_wandb": {"runtime": 365}}

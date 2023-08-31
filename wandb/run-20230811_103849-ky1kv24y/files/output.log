@@ -1,0 +1,100 @@
+/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/lightning_fabric/plugins/environments/slurm.py:165: PossibleUserWarning: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python3 /home/dl/takamagahara/hutodama/MAE/src/main.py ...
+  rank_zero_warn(
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/lightning_fabric/plugins/environments/slurm.py:165: PossibleUserWarning: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python3 /home/dl/takamagahara/hutodama/MAE/src/main.py ...
+  rank_zero_warn(
+Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/2
+----------------------------------------------------------------------------------------------------
+distributed_backend=nccl
+All distributed processes registered. Starting with 2 processes
+----------------------------------------------------------------------------------------------------
+You are using a CUDA device ('NVIDIA GeForce RTX 3090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+Sanity Checking DataLoader 0:   0%|                                                                                                                                                                                                                     | 0/10 [00:00<?, ?it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+  | Name  | Type                 | Params
+-----------------------------------------------
+0 | model | MaskedAutoencoderViT | 111 M
+-----------------------------------------------
+111 M     Trainable params
+252 K     Non-trainable params
+111 M     Total params
+447.631   Total estimated model params size (MB)
+Traceback (most recent call last):
+  File "/home/dl/takamagahara/hutodama/MAE/src/main.py", line 6, in <module>
+    main(params)
+  File "/media/dl/hutodama/MAE/src/train.py", line 101, in main
+    trainer.fit(method, loco_datamodule)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 529, in fit
+    call._call_and_handle_interrupt(
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 41, in _call_and_handle_interrupt
+    return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/launchers/subprocess_script.py", line 91, in launch
+    return function(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 568, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 973, in _run
+    results = self._run_stage()
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1014, in _run_stage
+    self._run_sanity_check()
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1043, in _run_sanity_check
+    val_loop.run()
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/utilities.py", line 177, in _decorator
+    return loop_run(self, *args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 115, in run
+    self._evaluation_step(batch, batch_idx, dataloader_idx)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 375, in _evaluation_step
+    output = call._call_strategy_hook(trainer, hook_name, *step_kwargs.values())
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 291, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/strategies/ddp.py", line 336, in validation_step
+    return self.model(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1156, in forward
+    output = self._run_ddp_forward(*inputs, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/parallel/distributed.py", line 1110, in _run_ddp_forward
+    return module_to_run(*inputs[0], **kwargs[0])  # type: ignore[index]
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/pytorch_lightning/overrides/base.py", line 102, in forward
+    return self._forward_module.validation_step(*inputs, **kwargs)
+  File "/media/dl/hutodama/MAE/src/method.py", line 115, in validation_step
+    val_loss, pred, mask = self.inference(batch)
+  File "/media/dl/hutodama/MAE/src/method.py", line 46, in inference
+    self.check_cache(batch, files)
+  File "/media/dl/hutodama/MAE/src/method.py", line 165, in check_cache
+    seg_masks = self.predict_seg_masks(batch[missing_indices])
+  File "/media/dl/hutodama/MAE/src/method.py", line 186, in predict_seg_masks
+    seg_masks = [self.mask_generator.generate(image) for image in batch_arr]
+  File "/media/dl/hutodama/MAE/src/method.py", line 186, in <listcomp>
+    seg_masks = [self.mask_generator.generate(image) for image in batch_arr]
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/automatic_mask_generator.py", line 163, in generate
+    mask_data = self._generate_masks(image)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/automatic_mask_generator.py", line 206, in _generate_masks
+    crop_data = self._process_crop(image, crop_box, layer_idx, orig_size)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/automatic_mask_generator.py", line 236, in _process_crop
+    self.predictor.set_image(cropped_im)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/predictor.py", line 60, in set_image
+    self.set_torch_image(input_image_torch, image.shape[:2])
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/predictor.py", line 89, in set_torch_image
+    self.features = self.model.image_encoder(input_image)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/modeling/image_encoder.py", line 112, in forward
+    x = blk(x)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/modeling/image_encoder.py", line 174, in forward
+    x = self.attn(x)
+  File "/home/dl/takamagahara/hutodama/MAE/env/mae/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/media/dl/hutodama/MAE/segment-anything/segment_anything/modeling/image_encoder.py", line 231, in forward
+    attn = (q * self.scale) @ k.transpose(-2, -1)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 1024.00 MiB (GPU 0; 23.69 GiB total capacity; 3.43 GiB already allocated; 367.38 MiB free; 3.52 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF

@@ -1,0 +1,1 @@
+{"ckpt_dir": "wandb/run-20230806_145451-utwbropp/ckpt", "run_id": "utwbropp", "_timestamp": 1691301386.3458018, "val_loss": 0.16394928097724915, "epoch": 1, "trainer/global_step": 9, "_runtime": 95.25983691215515, "_step": 2, "train_loss_epoch": 0.19448597729206085, "_wandb": {"runtime": 120}}
