@@ -11,13 +11,12 @@ import wandb
 
 from dataset import LOCODataModule, ImageNetTransforms
 from models_mae import MaskedAutoencoderViT
-from method import MAEMethod, MAEFlowMethod
+from method import MAEMethod
 from params import MAEParams
 from common import ImageLogCallback, prepare_model
-from fastflow import FastFlow
 
 import cv2
-from segment_anything import SamAutomaticMaskGenerator, SamPredictor, sam_model_registry
+
 
 
 def main(params: Optional[MAEParams] = None, **kwargs):
@@ -41,17 +40,10 @@ def main(params: Optional[MAEParams] = None, **kwargs):
         arch=params.arch,
     )
     
-    flow = FastFlow(
-        feature_dims=[1280],
-        out_resolutions=[(14, 14)],
-        input_resolution=params.resolution,
-    )
-    
-    method = MAEFlowMethod(
-        flow=flow,
+    method = MAEMethod(
         mae=mae,
         datamodule=loco_datamodule,
-        params=params,
+        params=params
     )
     
     method.load_state_dict(torch.load(params.pretrained_model_ckpt)['state_dict'], strict=False)
