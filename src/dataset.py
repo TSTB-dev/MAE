@@ -19,6 +19,8 @@ from torchvision.transforms import functional as F, InterpolationMode
 import pytorch_lightning as pl
 from pytorch_lightning import LightningDataModule
 
+from object_detector import ObjectDetector
+
 
 class ImageNetTransforms():
     def __init__(self, input_resolution: Tuple[int, int]):
@@ -40,7 +42,8 @@ class ImageNetTransforms():
     
 class MVTecLOCODataset(torch.utils.data.Dataset):
     def __init__(self, data_root: str, category: str, input_resolution: Tuple[int, int], split: str, \
-        img_transforms: transforms, mask_config: dict = None, is_gtmask=False, color='rgb'):
+        img_transforms: transforms, mask_config: dict = None, is_gtmask=False, color='rgb', \
+        object_detector=False, patch_size: int = 16, **kwargs):
         """Dataset for MVTec LOCO.
         Args:
             data_root: Root directory of MVTecAD dataset. It should contain the data directories for each class under this directory.
@@ -51,6 +54,8 @@ class MVTecLOCODataset(torch.utils.data.Dataset):
             mask_config(dict): Mask config dict.
             is_gtmask: If True, return the mask image as the target. Otherwise, return the label.
             color: rgb or grayscale
+            object_detector(bool): If True, use object detector to mask the image.
+            patch_size(int): Patch size for object detector.
         """
         self.data_root = data_root
         self.category = category
@@ -60,9 +65,20 @@ class MVTecLOCODataset(torch.utils.data.Dataset):
         self.mask_config = mask_config
         self.is_gtmask = is_gtmask
         self.color = color
+        self.object_detector = object_detector
+        self.img_size = input_resolution[0]
+        assert self.img_size == input_resolution[1], "Input resolution must be square."
         
         if mask_config is not None:
             self.mask_dir = mask_config['mask_dir']
+        
+        if self.object_detector:
+            try:
+                detector_config = kwargs['detector_config']
+                detector_ckpt = kwargs['detector_ckpt']
+            except KeyError:
+                raise KeyError("Please specify arguments:  detector_config and detector_ckpt")
+            self.detector = ObjectDetector(detector_config, detector_ckpt, self.img_size, patch_size, device='cpu')
         
         assert Path(self.data_root).exists(), f"Path {self.data_root} does not exist"
         assert self.split == 'train' or self.split == 'valid' or self.split == 'test'
@@ -94,13 +110,17 @@ class MVTecLOCODataset(torch.utils.data.Dataset):
             img = img.convert('L')
         if self.img_transforms is not None:
             img = self.img_transforms(img)
+        sample = {"images": img, "files": str(img_file)}
         
         if self.mask_config is not None:        
             masks = self.load_masks_from_hdf(img_file)
             masks = masks.astype(np.float32)
             masks = torch.from_numpy(masks)
+
+        if self.object_detector:
+            bbox_token_mask, _, _ = self.detector.predict(str(img_file))  # (Num_bbox, Num_token)
+            sample["token_masks"] = bbox_token_mask
         
-        sample = {"images": img, "files": str(img_file)}
         if self.split == 'train' or self.split == 'valid':
             return sample
 
@@ -170,6 +190,8 @@ class LOCODataModule(LightningDataModule):
                  batch_size: int,
                  num_workers: int,
                  mask_config: dict = None, 
+                 object_detector: bool = False,
+                 patch_size: int = 16,
                  **kwargs
                  ) -> None:
         super().__init__()
@@ -181,15 +203,30 @@ class LOCODataModule(LightningDataModule):
         self.mask_config = mask_config
         self.batch_size = batch_size
         self.num_workers = num_workers
+        self.object_detector = object_detector
+        self.patch_size = patch_size
         self.kwargs = kwargs
         
     def prepare_data(self):
         pass
     
     def setup(self, stage:str= None):
-        self.train_dataset = MVTecLOCODataset(self.data_root, self.category, self.input_resolution, 'train', self.img_transforms, self.mask_config, **self.kwargs)
-        self.valid_dataset = MVTecLOCODataset(self.data_root, self.category, self.input_resolution, 'valid', self.img_transforms, self.mask_config,**self.kwargs)
-        self.test_dataset = MVTecLOCODataset(self.data_root, self.category, self.input_resolution, 'test', self.img_transforms, self.mask_config, **self.kwargs)
+        splits = ['train', 'valid', 'test']
+        datasets = [
+            MVTecLOCODataset(
+            data_root=self.data_root, 
+            category=self.category, 
+            input_resolution=self.input_resolution, 
+            split=split,
+            img_transforms=self.img_transforms, 
+            mask_config=self.mask_config, 
+            is_gtmask=False,
+            object_detector=self.object_detector, 
+            patch_size=self.patch_size, 
+            **self.kwargs
+        ) for split in splits
+        ]
+        self.train_dataset, self.valid_dataset, self.test_dataset = datasets
     
     def train_dataloader(self) -> TRAIN_DATALOADERS:
         return DataLoader(
@@ -225,7 +262,7 @@ class LOCODataModule(LightningDataModule):
 if __name__ == '__main__':
     data_root = './data/mvtec_loco'
     category = 'pushpins'
-    mask_config = {'top_k': 5, 'mask_dir': './mask_data/mvtec_loco'}
+    kwargs = {"detector_config": './notebooks/configs/rtmdet/config_screw.py', "detector_ckpt": './notebooks/work_dirs/config_screw/best_coco_bbox_mAP_epoch_20.pth'}
     
     dataset = MVTecLOCODataset(
         data_root=data_root,
@@ -233,19 +270,23 @@ if __name__ == '__main__':
         input_resolution=(256, 256),
         split='test',
         img_transforms=None,
-        mask_config=mask_config,
+        object_detector=True, 
+        **kwargs
     )
     datamodule = LOCODataModule(
         data_root,
         category,
-        (256, 256),
-        ImageNetTransforms((256, 256)), 
-        4,
-        4,
-        mask_config=mask_config,
+        (224, 224),
+        ImageNetTransforms((224, 224)), 
+        16,
+        1,
+        object_detector=True, 
+        **kwargs
     )
     datamodule.setup()
-    print(next(iter(datamodule.val_dataloader()))['masks'].shape)
-    # crop_boxes: (B, K, 4)
-    # crop_images: (B, K, H, W, C)
-    # masks: (B, K, H, W)
+    
+    import time
+    start = time.time()
+    print(next(iter(datamodule.val_dataloader())).keys())
+    end = time.time()
+    print(end - start)

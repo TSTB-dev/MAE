@@ -5,3 +5,4 @@ pytorch-lightning
 wandb
 h5py
 opencv-python
+yapf==0.40.1

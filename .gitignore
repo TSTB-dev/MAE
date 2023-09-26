@@ -2,3 +2,4 @@ data/
 ckpt/
 env/
 segment-anything/
+mmdetection/

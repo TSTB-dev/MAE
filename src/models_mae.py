@@ -212,7 +212,7 @@ class MaskedAutoencoderViT(nn.Module):
         x = x + self.pos_embed[:, 1:, :]
 
         # masking: length -> length * mask_ratio
-        if mask_indices is not None:
+        if mask_indices != []:
             # fixed masking
             x, mask, ids_restore = self.fixed_masking(x, mask_indices) # self.obj_masking(x, mask_indices) 
         else:

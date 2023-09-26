@@ -21,6 +21,7 @@ from torchvision import utils as vutils
 from torchvision.transforms import ToPILImage
 from IPython.display import display
 from ipywidgets import interactive, IntSlider, HBox, VBox
+import torch.nn.functional as F
 
 sys.path.append('../src')
 import models_mae
@@ -55,8 +56,7 @@ def main(params: Optional[MAEParams] = None, **kwargs):
 
     mae = getattr(models_mae, params.arch)()
 
-    method = MAEFlowMethod(
-        flow=flow, 
+    method = MAEMethod(
         mae=mae,
         datamodule=datamodule,
         params=params,
@@ -89,23 +89,33 @@ def main(params: Optional[MAEParams] = None, **kwargs):
     # indices of the logical anomalies and structural anomalies
     log_indices = [idx for idx, file in enumerate(test_dataloader.dataset.files) if 'logical' in str(file)]
     str_indices = [idx for idx, file in enumerate(test_dataloader.dataset.files) if 'structural' in str(file)]
+    error_arr = np.zeros((len(test_dataloader.dataset), params.eval_iter))
     
-    error_maps = []
-    for batch in tqdm(test_dataloader):
-        flow_out = method.inference(batch)
-        heatmaps = flow_out['heatmaps'][:, 0, ...].cpu()
-        error_maps += heatmaps
+    for i in range(params.eval_iter):
+        error_list = []
+        for batch in tqdm(test_dataloader):
+            with torch.no_grad():
+                _, predicts, masks = method.inference(batch, mask_ratio=0.80)  # (B, N, C)
+                _, targets, _ = method.inference(batch, mask_ratio=0.0)  # (B, N, C)
+            
+            fsz = predicts.shape[-1]
+            patch_size = method.model.patch_embed.patch_size[0]
+            num_patches = params.resolution[0] // patch_size
+            mask_indices = [torch.where(m == 1.)[0] for m in masks]  # [(Nm, ), xB]
+            pred_masked = torch.stack([predicts[i, m_ind, :] for i, m_ind in enumerate(mask_indices)])  # (B, Nm, C)
+            tar_masked = torch.stack([targets[i, m_ind, :] for i, m_ind in enumerate(mask_indices)])  # (B, Nm, C)
+            
+            # compute error map
+            error_masked = torch.sum((pred_masked - tar_masked) ** 2, dim=2, keepdim=False)  # (B, Nm)
+            error_masked = torch.mean(error_masked, dim=1, keepdim=False).cpu().tolist()  # [B, ]
+            error_list += error_masked 
+        error_arr[:, i] = error_list # (N, )
     
+    error_arr = np.mean(error_arr, axis=1)  # (N, )
     output_dir = Path("/home/dl/takamagahara/hutodama/MAE/output")
-    for i in range(len(error_maps)):
-        error_map = error_maps[i]
-        file = test_dataset.files[i]
-        label = test_dataset.labels[i]
-        save_path = output_dir / f"{file.stem}_label{label}.png"
-        save_image(error_map, save_path)
     
     # compute Image-level AUROC
-    im_scores = [torch.mean(error_map, dim=(0, 1)).item() for error_map in error_maps]
+    im_scores = list(error_arr)
     im_auroc = compute_image_auroc(im_scores, test_dataset.labels)
     print(f"Image-level AUROC: {im_auroc}")
     
